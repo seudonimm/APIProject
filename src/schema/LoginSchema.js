@@ -1,11 +1,16 @@
 import * as yup from 'yup';
 
 export const LoginSchema = yup.object().shape({
-    username: yup
+    firstName: yup
         .string()
-        .required('Username Required'),
-    password: yup
+        .required('First Name Required'),
+    lastName: yup
         .string()
-        .min(8, ({min}) => `Password should be at least ${min} characters`)
-        .required('Password Required')
-});
+        .required('Password Required'),
+    age: yup
+        .number()
+        .required('Age Required'),
+    info:yup
+        .string()
+        .required('Info Required')
+}); 

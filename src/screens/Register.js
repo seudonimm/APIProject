@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { 
     SafeAreaView,
+    StyleSheet,
     Text 
 } from "react-native";
 import CustomInputField from "../components/CustomInputField";
@@ -10,16 +11,17 @@ import { storeLoginInfo } from "../services/APIServices";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createStaticNavigation, useNavigation } from "@react-navigation/native";
 import CustomButton from "../components/CustomButton";
+import { URL } from "../res/strings";
 
 const Register = () => {
     const navigation = useNavigation();
 
     const[username, setUsername] = useState('');
 
-    const OnLogin = (user, pass) => {
-        console.log(user + " df " + pass);
-        storeLoginInfo(user, pass);
-        navigation.navigate("Main");
+    const OnLogin = (fName, lName, age, info) => {
+        console.log(fName + " df " + lName);
+        storeLoginInfo(fName, lName, age, info, URL+"/info");
+        navigation.navigate("GetDataScreen");
 
     }
 
@@ -28,30 +30,42 @@ const Register = () => {
     }
 
     return(
-        <SafeAreaView>
+        <SafeAreaView style={styles.container}>
 
-            <Formik 
-                initialValues={{username: '', password: ''}}
+            <Formik style={styles.container}
+                initialValues={{firstName: '', lastName: '', age: 0, info: ''}}
                 validationSchema={LoginSchema}
-                onSubmit={values => OnLogin(values.username, values.password)}
+                onSubmit={values => OnLogin(values.firstName, values.lastName, values.age, values.info)}
             >
                 {({handleChange, handleSubmit, values, errors}) => (
-                    <SafeAreaView>
-                        <Text>Username</Text>
+                    <SafeAreaView style={styles.container}>
+                        <Text>First Name</Text>
                         <CustomInputField
-                            text={"Username"}
-                            onChangeText={handleChange('username')}
-                            inputErrorMessage={errors.username}
+                            text={"First Name"}
+                            onChangeText={handleChange('firstName')}
+                            inputErrorMessage={errors.firstName}
                         />
-                        <Text>Password</Text>
+                        <Text>Last Name</Text>
                         <CustomInputField
-                            text={"Password"}
-                            onChangeText={handleChange('password')}
-                            inputErrorMessage={errors.password}
+                            text={"Last Name"}
+                            onChangeText={handleChange('lastName')}
+                            inputErrorMessage={errors.lastName}
+                        />                        
+                        <Text>Age</Text>
+                        <CustomInputField
+                            text={"Age"}
+                            onChangeText={handleChange('age')}
+                            inputErrorMessage={errors.age}
+                        />                        
+                        <Text>Info</Text>
+                        <CustomInputField
+                            text={"Info"}
+                            onChangeText={handleChange('info')}
+                            inputErrorMessage={errors.info}
                         />
                         <CustomButton
-                            text={"Register"}
-                            onPress={() => handleSubmit(values.username, values.password)}
+                            text={"Add"}
+                            onPress={() => handleSubmit(values.firstName, values.lastName, values.age, values.info)}
                         />
                     </SafeAreaView>
                 )}
@@ -61,5 +75,11 @@ const Register = () => {
 
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    }
+})
 
 export default Register;

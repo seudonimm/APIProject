@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     textStyle: {
+        zIndex:1,
         color: 'white',
         textAlign: 'center',
         fontSize: 20

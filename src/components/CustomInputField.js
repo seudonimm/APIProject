@@ -31,48 +31,22 @@ const CustomInputField = (props) => {
 
 const styles = StyleSheet.create({
     container:{
-        flexDirection: 'row',
-        height: '25%',
+        height: 50,
         width: '90%',
         alignSelf: 'center',
         backgroundColor: '#1e1d24',
         borderRadius: 30,
-        justifyContent: 'left',
+        //justifyContent: 'left',
         borderWidth: 1,
         borderColor: 'white',
-        margin: '2%',
+        //margin: '2%',
         paddingLeft: '10%',
         color: 'white'
     },
     inputStyle: {
         flex: 1,
-        /*height: '7%',
-        width: '90%',
-        alignSelf: 'center',
-        backgroundColor: '#1e1d24',
-        borderRadius: 30,
-        justifyContent: 'left',
-        borderWidth: 1,
-        borderColor: 'white',
-        margin: '2%',
-        paddingLeft: '10%',*/
+        height: 50,
         color: 'white'
-    },
-    imageStyle: {
-        flex: 1,
-        height: 25,
-        width: 25,
-        marginTop: '5%',
-        marginRight: '5%'
-    },
-    endImageStyle: {
-        flex: 1,
-        height: 25,
-        width: 25,
-        marginTop: '5%',
-        marginRight: '5%',
-        justifyContent: 'flex-end',
-        
     },
     textStyle: {
         color: 'red',

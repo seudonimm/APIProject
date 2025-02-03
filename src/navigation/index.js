@@ -3,11 +3,14 @@ import React from "react";
 import Main from "../screens/Main";
 import { createStaticNavigation } from "@react-navigation/native";
 import Register from "../screens/Register";
+import GetDataScreen from "../screens/GetDataScreen";
 
 const RootStack = createNativeStackNavigator({
     screens: {
         Register: Register,
-        Main: Main
+        Main: Main,
+        GetDataScreen: GetDataScreen,
+        
     }
 });
 
