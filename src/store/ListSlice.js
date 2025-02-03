@@ -2,7 +2,7 @@ import { createSlice, configureStore, createAsyncThunk } from "@reduxjs/toolkit"
 import { retrieveAllUserData } from "../services/APIServices";
 
 export const retrieveData = createAsyncThunk('list/retrieve',
-    async(none, thunkAPI) => {
+    async() => {
         try {
             let res = await retrieveAllUserData(URL+"/getinfo");
             console.log(res.data)

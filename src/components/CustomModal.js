@@ -21,18 +21,22 @@ const CustomModal = props => {
         <ScrollView
             style={styles.container}
         >
+            <Text>First Name</Text>
             <CustomInputField
                 text={field1}  
                 onChangeText={props.onChangeText1}
             />            
+            <Text>Last Name</Text>
             <CustomInputField
                 text={field2}  
                 onChangeText={props.onChangeText2}
             />
+            <Text>Age</Text>
             <CustomInputField
                 text={field3}  
                 onChangeText={props.onChangeText3}
             />
+            <Text>Info</Text>
             <CustomInputField
                 text={field4}  
                 onChangeText={props.onChangeText4}
@@ -62,7 +66,7 @@ const styles = StyleSheet.create({
         width: '80%',
         borderWidth: 1,
         borderRadius: 30,
-        marginHorizontal: '3%',
+        marginHorizontal: '25%',
         marginVertical: '40%',
         alignSelf: 'center'
     },
