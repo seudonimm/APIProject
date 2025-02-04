@@ -22,21 +22,25 @@ const GetDataScreen = () => {
     const [updateModalVisible, setUpdateModalVisible] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentIndexItem, setCurrentIndexItem] = useState({})
+    const [loading, setLoading] = useState(true);
+
     const list = useSelector(state => state.list);
 
     const getListData = () => {
-        store.dispatch(retrieveData());
+        store.dispatch({type: 'GET_LIST_DATA'});
         console.log("done");
     }
     const onPressDeleteItem = (id) => {
         deleteData(id, URL+`/info?id=${id}`);
-        getListData();
+        setTimeout(() => {
+            getListData();
+        }, 500);
     }
     const onItemViewPress =(i) => {
         setUpdateModalVisible(true);
         setCurrentIndex(i);
-        console.log(list.value.data.data.data[i])
-        setCurrentIndexItem(list.value.data.data.data[i])
+        console.log(list.value.payload.data.data[i])
+        setCurrentIndexItem(list.value.payload.data.data[i])
     }
     const updateListItem = (id, fName, lName, age, info) => {
         updateData(id, fName, lName, age, info, URL+"/updateinfo");
@@ -55,17 +59,18 @@ const GetDataScreen = () => {
                 onPress2={() => onPressDeleteItem(i)}
 
             />
-            {/* <CustomModal
-                field1={list.value.data.data.data[i].firstName}
-            /> */}
         </View>
         )
     }
+
     useEffect(
         () =>{
             //console.log("in gsd before" + JSON.stringify(list.value.data.data.data));
             getListData();
-
+            setTimeout(() => {
+                console.log("checking " +JSON.stringify(list));
+                setLoading(list.success)
+            }, 1000);
             // if(list.value.data){
             //     console.log("in gsd" + JSON.stringify(list.value.data.data.data));
             // }
@@ -73,9 +78,9 @@ const GetDataScreen = () => {
     );
     return(
         <SafeAreaView style={styles.container}>
-            {(list.value!=null)?
+            {(!loading)?
             <FlatList style={styles.flatlistStyle}
-                data={(list.value.data.data.data)}
+                data={(list.value.payload.data.data)}
                 renderItem={({item, index}) => (renderListItem(JSON.stringify(item.firstName + " " + item.lastName), index))}
                 keyExtractor={(item, index)=>index}
             />:<ActivityIndicator/>
@@ -84,16 +89,16 @@ const GetDataScreen = () => {
                 text={"Refresh List"}
                 onPress={() => getListData()}
             />
-            {(list.value!=null)?
+            {(!loading)?
             <CustomModal
                 visible={updateModalVisible}
-                field1={list.value.data.data.data[currentIndex].firstName}
+                field1={list.value.payload.data.data[currentIndex].firstName}
                 onChangeText1={t => setCurrentIndexItem({...currentIndexItem, firstName: t})}
-                field2={list.value.data.data.data[currentIndex].lastName}
+                field2={list.value.payload.data.data[currentIndex].lastName}
                 onChangeText2={t => setCurrentIndexItem({...currentIndexItem, lastName: t})}
-                field3={list.value.data.data.data[currentIndex].age}
+                field3={list.value.payload.data.data[currentIndex].age}
                 onChangeText3={t => setCurrentIndexItem({...currentIndexItem, age: t})}
-                field4={list.value.data.data.data[currentIndex].info}
+                field4={list.value.payload.data.data[currentIndex].info}
                 onChangeText4={t => setCurrentIndexItem({...currentIndexItem, info: t})}
                 button1={"Update"}
                 onPress1={() => updateListItem(

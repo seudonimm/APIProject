@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const storeLoginInfo = async (firstName, lastName, age, info, url) => {
     try {
-        let res = await axios.post(url, {
+        let res = await axios.post('/info', {
             data:{
                 firstName: firstName,
                 lastName: lastName,
@@ -21,7 +21,7 @@ export const storeLoginInfo = async (firstName, lastName, age, info, url) => {
 
 export const retrieveAllUserData = async(url) => {
     try {
-        let res = await axios.get('https://earthy-gelatinous-prawn.glitch.me/getinfo')
+        let res = await axios.get('/getinfo')
 
         console.log(res);
         return {success: true, data: res}
@@ -35,7 +35,7 @@ export const retrieveAllUserData = async(url) => {
 
 export const deleteData = async(id, url) => {
     try {
-        let res = await axios.delete(url, {id:id});
+        let res = await axios.delete(`/info?id=${id}`);
         console.log(res);
         return {success: true, data: res};
     } catch (error) {
@@ -47,7 +47,7 @@ export const deleteData = async(id, url) => {
 
 export const updateData = async(id, firstName, lastName, age, info, url) => {
     try {
-        let res = await axios.put(url, {
+        let res = await axios.put('/updateinfo', {
             id:id,
             newData:{
                 firstName: firstName,
@@ -65,6 +65,11 @@ export const updateData = async(id, firstName, lastName, age, info, url) => {
     }
 
 }
+
+
+
+
+
 //-----------
 export const storeLoginInfoFetch = async (firstName, lastName, age, info) => {
     try {
@@ -90,7 +95,7 @@ export const storeLoginInfoFetch = async (firstName, lastName, age, info) => {
 
 export const retrieveAllUserDataFetch = async() => {
     try {
-        let res = await axios.get('https://earthy-gelatinous-prawn.glitch.me/getinfo')
+        let res = await fetch('https://earthy-gelatinous-prawn.glitch.me/getinfo')
 
         console.log(res);
         return {success: true, data: res}
