@@ -6,7 +6,7 @@ export const LoginSchema = yup.object().shape({
         .required('First Name Required'),
     lastName: yup
         .string()
-        .required('Password Required'),
+        .required('Last Name Required'),
     age: yup
         .number()
         .required('Age Required'),

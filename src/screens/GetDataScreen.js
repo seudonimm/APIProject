@@ -66,11 +66,11 @@ const GetDataScreen = () => {
     useEffect(
         () =>{
             //console.log("in gsd before" + JSON.stringify(list.value.data.data.data));
-            getListData();
+            //getListData();
             setTimeout(() => {
                 console.log("checking " +JSON.stringify(list));
                 setLoading(list.success)
-            }, 1000);
+            }, 500);
             // if(list.value.data){
             //     console.log("in gsd" + JSON.stringify(list.value.data.data.data));
             // }

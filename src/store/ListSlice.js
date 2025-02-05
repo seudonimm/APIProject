@@ -22,7 +22,7 @@ const listSlice = createSlice({
     },
     reducers: {
         getData: (state, payload) => {
-
+            state.value = null;
         },
         getDataSuccess: (state, action) => {
             state.value = action.payload;

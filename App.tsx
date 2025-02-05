@@ -27,12 +27,15 @@ import {
 import Main from './src/screens/Main';
 import AppNavigation from './src/navigation';
 import { Provider } from 'react-redux';
-import store from './src/store/Store';
+import store, { persistor } from './src/store/Store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 function App(): React.JSX.Element {
   return(
     <Provider store={store}>
-    <AppNavigation/>
+      <PersistGate loading={null} persistor={persistor}>
+        <AppNavigation/>
+      </PersistGate>
     </Provider>
   );
 }
