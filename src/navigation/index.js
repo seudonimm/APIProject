@@ -4,9 +4,12 @@ import Main from "../screens/Main";
 import { createStaticNavigation } from "@react-navigation/native";
 import Register from "../screens/Register";
 import GetDataScreen from "../screens/GetDataScreen";
+import CreateAccount from "../screens/CreateAccount";
 
 const RootStack = createNativeStackNavigator({
+    initialRouteName: 'CreateAccount',
     screens: {
+        CreateAccount: CreateAccount,
         Register: Register,
         Main: Main,
         GetDataScreen: GetDataScreen,

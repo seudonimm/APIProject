@@ -10,12 +10,13 @@ import {
 } from "react-native";
 import store from "../store/Store";
 import CustomButton from "../components/CustomButton";
-import { addToList, refreshList, retrieveData } from "../store/ListSlice";
+import { addToList, refreshList, removeData, retrieveData, updateItemData } from "../store/ListSlice";
 import { useSelector } from "react-redux";
 import FlatListItemBox from "../components/FlatListItemBox";
 import { deleteData, updateData } from "../services/APIServices";
 import CustomModal from "../components/CustomModal";
 import { URL } from "../res/strings";
+import { useNavigation } from "@react-navigation/native";
 
 const GetDataScreen = () => {
 
@@ -26,15 +27,22 @@ const GetDataScreen = () => {
 
     const list = useSelector(state => state.list);
 
+    const navigation = useNavigation();
+
     const getListData = () => {
         store.dispatch({type: 'GET_LIST_DATA'});
         console.log("done");
     }
     const onPressDeleteItem = (id) => {
         deleteData(id, URL+`/info?id=${id}`);
-        setTimeout(() => {
-            getListData();
-        }, 500);
+        store.dispatch(removeData(id));
+
+        if(list.value.payload.data.data.length == 0){
+            navigation.goBack()
+        }
+        // setTimeout(() => {
+        //     getListData();
+        // }, 500);
     }
     const onItemViewPress =(i) => {
         setUpdateModalVisible(true);
@@ -44,13 +52,16 @@ const GetDataScreen = () => {
     }
     const updateListItem = (id, fName, lName, age, info) => {
         updateData(id, fName, lName, age, info, URL+"/updateinfo");
+
+        let changes = {id:id, firstName:fName, lastName:lName, age:age, info:info};
+        store.dispatch(updateItemData(changes));
         setUpdateModalVisible(false);
         console.log(currentIndexItem);
-        getListData();
+        //getListData();
 
     }
     const renderListItem = (item, i) => {
-        console.log((item + "lkj"));
+        //console.log((item + "lkj"));
         return(
         <View>
             <FlatListItemBox
@@ -66,7 +77,9 @@ const GetDataScreen = () => {
     useEffect(
         () =>{
             //console.log("in gsd before" + JSON.stringify(list.value.data.data.data));
-            //getListData();
+            if(!list.value){
+                getListData();
+            }
             setTimeout(() => {
                 console.log("checking " +JSON.stringify(list));
                 setLoading(list.success)
@@ -76,6 +89,7 @@ const GetDataScreen = () => {
             // }
         },[]
     );
+    
     return(
         <SafeAreaView style={styles.container}>
             {(!loading)?
@@ -89,7 +103,7 @@ const GetDataScreen = () => {
                 text={"Refresh List"}
                 onPress={() => getListData()}
             />
-            {(!loading)?
+            {(list.value.payload.data.data[currentIndex]!=undefined)?
             <CustomModal
                 visible={updateModalVisible}
                 field1={list.value.payload.data.data[currentIndex].firstName}

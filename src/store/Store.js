@@ -1,11 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit"
 import listSlice from "./ListSlice"
+import loginSlice from "./LoginSlice";
 import createSagaMiddleware from "redux-saga";
 import logger from 'redux-logger';
 import ListSaga from "./sagas/ListSaga";
 import { persistStore, persistReducer } from "redux-persist";
 //import storage from 'redux-persist/lib/storage'
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LoginSaga from "./sagas/LoginSaga";
+import rootSaga from "./sagas/rootSaga";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -18,7 +21,8 @@ const persistedReducer = persistReducer(persistConfig, listSlice.reducer);
 
 const store = configureStore({
     reducer: {
-        list: persistedReducer//listSlice.reducer
+        list: persistedReducer,//listSlice.reducer
+        login: loginSlice.reducer
     },
     devTools: process.env.NODE_ENV !== 'production',
     middleware: (getDefaultMiddleware) => 
@@ -34,7 +38,7 @@ const store = configureStore({
         }).concat(logger, sagaMiddleware)
 })
 
-sagaMiddleware.run(ListSaga);
+sagaMiddleware.run(rootSaga);
 
 export default store;
 export const persistor = persistStore(store);

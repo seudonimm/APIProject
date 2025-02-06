@@ -25,12 +25,26 @@ const listSlice = createSlice({
             state.value = null;
         },
         getDataSuccess: (state, action) => {
-            state.value = action.payload;
+            if(!action.payload){
+                state.value = null;
+                console.log("no data on server")
+            }
+            else{
+                state.value = action.payload;
+            }
             console.log(state.value);
         },
         getDataFailed: (state) => {
             state.value = null;
             //console.log("error " + action.payload);
+        },
+        removeData: (state, action) => {
+            console.log("removedd")
+            state.value.payload.data.data.splice(action.payload, 1);
+        },
+        updateItemData: (state, action) => {
+            console.log("updata");
+            state.value.payload.data.data[action.payload.id] = {...action.payload};
         }
     },
     // extraReducers: (builder) => {
@@ -42,6 +56,6 @@ const listSlice = createSlice({
     // }
 })
 
-export const {getData, getDataSuccess, getDataFailed} = listSlice.actions
+export const {getData, getDataSuccess, getDataFailed, removeData, updateItemData} = listSlice.actions
 
 export default listSlice;
