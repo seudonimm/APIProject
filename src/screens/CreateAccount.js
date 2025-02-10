@@ -1,20 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomInputField from "../components/CustomInputField";
 import { SafeAreaView, Text } from "react-native";
 import CustomButton from "../components/CustomButton";
 import store from "../store/Store";
+import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 const CreateAccount = () => {
+    const navigation = useNavigation();
+
+    const login = useSelector(state => state.login);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const onSubmitPress = (email, pass) => {
+    const onSubmitPress = (email, password) => {
         console.log("pressed")
  
-        store.dispatch({type:'CREATE_ACCOUNT', email, pass});
+        store.dispatch({type:'CREATE_ACCOUNT', payload: {email, password}});
         console.log("pressed")
+
     };
+
+    useEffect(
+        () => {
+            if (login.loggedIn){
+                navigation.replace('GetDataScreen');
+            }
+        },[login]
+    );
     return(
         <SafeAreaView style={{flex: 1}}>
             <Text>Email</Text>

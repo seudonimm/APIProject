@@ -26,6 +26,7 @@ const GetDataScreen = () => {
     const [loading, setLoading] = useState(true);
 
     const list = useSelector(state => state.list);
+    const login = useSelector(state => state.login);
 
     const navigation = useNavigation();
 
@@ -74,6 +75,9 @@ const GetDataScreen = () => {
         )
     }
 
+    const onLogoutPress = () => {
+        store.dispatch({type: 'LOGOUT'})
+    }
     useEffect(
         () =>{
             //console.log("in gsd before" + JSON.stringify(list.value.data.data.data));
@@ -128,6 +132,10 @@ const GetDataScreen = () => {
             />:
             <ActivityIndicator/>
             }
+            <CustomButton
+                text={"Logout"}
+                onPress={() => onLogoutPress()}
+            />
         </SafeAreaView>
     );
 };

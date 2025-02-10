@@ -56,6 +56,12 @@ const listSlice = createSlice({
     // }
 })
 
-export const {getData, getDataSuccess, getDataFailed, removeData, updateItemData} = listSlice.actions
+export const {
+    getData, 
+    getDataSuccess, 
+    getDataFailed, 
+    removeData, 
+    updateItemData
+} = listSlice.actions
 
 export default listSlice;

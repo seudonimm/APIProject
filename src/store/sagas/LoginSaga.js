@@ -1,35 +1,39 @@
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 import { takeLatest, call, put } from 'redux-saga/effects';
-import { createAccountFailure, createAccountSuccess } from '../LoginSlice';
+import { createAccountFailure, createAccountSuccess, loginFailed, loginSuccess, logoutFailed, logoutSuccess } from '../LoginSlice';
+import { getApp } from '@react-native-firebase/app';
 
-function* logInToAccount(){
+function* logInToAccount(action){
+    try{
+        const {email, password} = action.payload;
+        console.log('alfkdjs')
+        let res = yield call(auth().signInWithEmailAndPassword, email, password);
+        //console.log('res ' + res);
+        yield put(loginSuccess(res.user));
+    }catch(e){
+        console.log('fffff')
+        if(e.code === 'auth/email-already-in-use'){
+            console.log('That email address is already in use!');
+        }
+        if(e.code === 'auth/invalid-email'){
+            console.log('That email address is invalid!');
+        }
+        console.log(e);
+        yield put(loginFailed());
+    }
 
 }
-// function createAccountResponse(email, password){
-//     return auth()
-//         .createUserWithEmailAndPassword(email, password)
-//         .then(() => {
-            
-//             console.log('Account created')
-//         })
-//         .catch(error => {
-//             if(error.code === 'auth/email-already-in-use'){
-//                 console.log('That email address is already in use!');
-//             }
-//             if(error.code === 'auth/invalid-email'){
-//                 console.log('That email address is invalid!');
-//             }
 
-//             console.error(error);
-//         });
-
-// }
-function* createAccount(email, password){
+function* createAccount(action){
+    //yield console.log("THIS ONE RIGHT HERE: " + JSON.stringify(call(auth().createUserWithEmailAndPassword, email, password)));
     try{
-        const res = yield call(auth().createUserWithEmailAndPassword, email, password);
-        console.log('res ' + res);
-        yield put(createAccountSuccess());
+        const {email, password} = action.payload;
+        console.log('alfkdjs')
+        let res = yield call(auth().createUserWithEmailAndPassword, email, password);
+        //console.log('res ' + res);
+        yield put(createAccountSuccess(res.user));
     }catch(e){
+        console.log('fffff')
         if(e.code === 'auth/email-already-in-use'){
             console.log('That email address is already in use!');
         }
@@ -46,12 +50,23 @@ function* changePassword(){
 }
 
 function* logout(){
+    try{
+        //const {email, password} = action.payload;
+        console.log('alfkdjs')
+        let res = yield call(auth().signOut);
+        //console.log('res ' + res);
+        yield put(logoutSuccess());
+    }catch(e){
+
+        console.log(e);
+        yield put(logoutFailed());
+    }
 
 }
 
 function* LoginSaga(email, password){
     yield takeLatest('LOG_IN', logInToAccount);
-    yield takeLatest('CREATE_ACCOUNT', createAccount, email, password);
+    yield takeLatest('CREATE_ACCOUNT', createAccount);
     yield takeLatest('CHANGE_PASSWORD', changePassword);
     yield takeLatest('LOGOUT', logout);
 }
